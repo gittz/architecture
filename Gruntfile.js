@@ -53,6 +53,18 @@ module.exports = function (grunt) {
             }
         },
 
+         cssmin: {
+
+            css: {
+
+                src:'<%= concat.css.dest %>',
+
+                dest:'dist/<%= pkg.name %>.min.css'
+
+            }
+
+        },
+
         jshint: {
             files: ['Gruntfile.js', 'src/**/*.js'],
             options: {
@@ -82,5 +94,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-    grunt.registerTask('default', ['concat', 'watch']);
+    grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'watch']);
 };
