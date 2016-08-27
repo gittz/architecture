@@ -36,6 +36,34 @@ module.exports = function (grunt) {
                     'src/base/**/*.js', 'src/**/*.js'],
                 dest: 'dist/<%= pkg.name %>.js'
             },
+            nothird: {
+                src: [
+                    'src/core/underscore.js',
+                    'src/core/foundation.js',
+                    'src/core/**/*.js',
+
+                    'src/data/data.js',
+                    'src/data/**/*.js',
+
+                    'src/base/status.js',
+                    'src/base/base.js',
+                    'src/base/ob.js',
+                    'src/base/widget.js',
+                    'src/base/model.js',
+                    'src/base/view.js',
+                    'src/base/shortcut.js',
+                    'src/base/utils/*.js',
+                    'src/base/behavior/behavior.js',
+                    'src/base/wrapper/layout.js',
+                    'src/base/module/pane.js',
+                    'src/base/module/single/single.js',
+                    'src/base/module/single/text.js',
+                    'src/base/module/single/button/button.basic.js',
+                    'src/base/module/single/button/button.node.js',
+
+                    'src/base/**/*.js'],
+                dest: 'dist/<%= pkg.name %>.simple.js'
+            },
             css: {
                 src: ['src/css/**/*.css'],//当前grunt项目中路径下的src/css目录下的所有css文件
                 dest: 'dist/<%= pkg.name %>.css'  //生成到grunt项目路径下的dist文件夹下为all.css

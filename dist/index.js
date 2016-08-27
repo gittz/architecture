@@ -35317,18 +35317,7 @@ BI.Factory = {
 
     // Set the default implementation of `BI.ajax` to proxy through to `$`.
     // Override this if you'd like to use a different library.
-    BI.ajax = function(option) {
-        option || (option={});
-        //encode
-        for(var key in option.data){
-            if(_.isObject(option.data[key])){
-                option.data[key] = window.encodeURIComponent(BI.jsonEncode(option.data[key]));
-            } else{
-                option.data[key] = window.encodeURIComponent(option.data[key]);
-            }
-        }
-        return BI.ajax.apply(BI, [option]);
-    };
+    BI.ajax = $.ajax;
 
     // BI.Router
     // ---------------
@@ -38943,7 +38932,11 @@ BI.View = BI.inherit(BI.V, {
         throw new Error('无法根据item创建组件');
     }
 
-})(jQuery);$.extend(BI, {
+})(jQuery);/**
+ * BI工具类
+ * @class BI
+ */
+$.extend(BI, {
     /**
      * 返回对中日韩问做了特殊转换的字符串
      *
@@ -39006,6 +38999,21 @@ BI.View = BI.inherit(BI.V, {
 
         return newText;
     },
+
+    //replace the space(&nbsp;) of html with " "
+    //Only "&nbsp;" need to be decoded, because "&amp;", "&lt;", "&gt;", "&apos;" and "&quot;"
+    //can be paresed correctly by the org.w3c.dom to the eaxctly values '&', "<", ">", "'", """
+    htmlSpaceDecode: function (text) {
+        return (text == null) ? '' : String(text).replace(/&nbsp;/, ' ');
+    },
+    //replace the html special tags
+    htmlEncode: function (text) {
+        return (text == null) ? '' : String(text).replace(/&/g, '&amp;').replace(/\"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    },
+    //html decode
+    htmlDecode: function (text) {
+        return (text == null) ? '' : String(text).replace(/&amp;/g, '&').replace(/&quot;/g, '\"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ');
+    },
     //json encode
     jsonEncode: function (o) {
         //james:这个Encode是抄的EXT的
@@ -39063,7 +39071,7 @@ BI.View = BI.inherit(BI.V, {
 
         if (typeof o == "undefined" || o === null) {
             return "null";
-        } else if (_.isArray(o)) {
+        } else if ($.isArray(o)) {
             return encodeArray(o);
         } else if (o instanceof Date) {
             /*
@@ -39079,7 +39087,7 @@ BI.View = BI.inherit(BI.V, {
             return isFinite(o) ? String(o) : "null";
         } else if (typeof o == "boolean") {
             return String(o);
-        } else if (_.isFunction(o)) {
+        } else if ($.isFunction(o)) {
             return String(o);
         } else {
             var a = ["{"], b, i, v;
@@ -39158,7 +39166,6 @@ BI.View = BI.inherit(BI.V, {
         }
         return json.indexOf("__time__") != -1;
     },
-
     /**
      * 对指定的键值对对象做中日韩文编码处理
      *
@@ -58932,6 +58939,63 @@ $.extend(String.prototype, {
             offset += loc + sub.length;
         }
         return location;
+    }
+});
+
+/**
+ * 对字符串对象的扩展
+ * @class String
+ */
+$.extend(String, {
+
+    /**
+     * 对字符串中的'和\做编码处理
+     * @static
+     * @param {String} string 要做编码处理的字符串
+     * @return {String} 编码后的字符串
+     */
+    escape: function (string) {
+        return string.replace(/('|\\)/g, "\\$1");
+    },
+
+    /**
+     * 让字符串通过指定字符做补齐的函数
+     *
+     *      var s = String.leftPad('123', 5, '0');//s的值为：'00123'
+     *
+     * @static
+     * @param {String} val 原始值
+     * @param {Number} size 总共需要的位数
+     * @param {String} ch 用于补齐的字符
+     * @return {String}  补齐后的字符串
+     */
+    leftPad: function (val, size, ch) {
+        var result = String(val);
+        if (!ch) {
+            ch = " ";
+        }
+        while (result.length < size) {
+            result = ch + result;
+        }
+        return result.toString();
+    },
+
+    /**
+     * 对字符串做替换的函数
+     *
+     *      var cls = 'my-class', text = 'Some text';
+     *      var res = String.format('<div class="{0}>{1}</div>"', cls, text);
+     *      //res的值为：'<div class="my-class">Some text</div>';
+     *
+     * @static
+     * @param {String} format 要做替换的字符串，替换字符串1，替换字符串2...
+     * @return {String} 做了替换后的字符串
+     */
+    format: function (format) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        return format.replace(/\{(\d+)\}/g, function (m, i) {
+            return args[i];
+        });
     }
 });/**
  * 特殊情况
