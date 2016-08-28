@@ -61,7 +61,7 @@ module.exports = function (grunt) {
                     'src/base/module/single/button/button.basic.js',
                     'src/base/module/single/button/button.node.js',
 
-                    'src/base/**/*.js'],
+                    'src/base/**/*.js', 'src/case/**/*.js'],
                 dest: 'dist/<%= pkg.name %>.simple.js'
             },
             css: {
