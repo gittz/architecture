@@ -8,10 +8,4 @@ BI.Data = Data = {};
  * 存放bi里面通用的一些常量
  * @type {{}}
  */
-Data.Constant = BICst = {};
-
-/**
- * 存放bi里面每个类的配置信息
- * @type {{}}
- */
-Data.Config = BIFig = {};
+Data.Constant = BI.Constant = BICst = {};

@@ -7,66 +7,56 @@ module.exports = function (grunt) {
             options: {
                 separator: ''
             },
-            dist: {
-                src: ['src/third/jquery.js',
+            coreJs: {
+                src: [
+                    'src/core/jquery.js',
                     'src/core/underscore.js',
                     'src/core/foundation.js',
+                    'src/core/mvc/**/*.js',
+                    'src/core/base.js',
+                    'src/core/ob.js',
+                    'src/core/widget.js',
+                    'src/core/model.js',
+                    'src/core/view.js',
+                    'src/core/shortcut.js',
+                    'src/core/utils/*.js',
+                    'src/core/behavior/behavior.js',
+                    'src/core/wrapper/layout.js',
+                    'src/core/**/*.js',
+
                     'src/data/data.js',
+                    'src/data/**/*.js'
+                ],
+                dest: 'dist/core.js'
+            },
+            //最基础的控件
+            baseJs: {
+                src: [
                     'src/third/codemirror/codemirror.js',
                     'src/third/**/*.js',
-                    'src/core/**/*.js',
-                    'src/data/**/*.js',
-
-                    'src/base/status.js',
-                    'src/base/base.js',
-                    'src/base/ob.js',
-                    'src/base/widget.js',
-                    'src/base/model.js',
-                    'src/base/view.js',
-                    'src/base/shortcut.js',
-                    'src/base/utils/*.js',
-                    'src/base/behavior/behavior.js',
-                    'src/base/wrapper/layout.js',
-                    'src/base/module/pane.js',
-                    'src/base/module/single/single.js',
-                    'src/base/module/single/text.js',
-                    'src/base/module/single/button/button.basic.js',
-                    'src/base/module/single/button/button.node.js',
-
-                    'src/base/**/*.js', 'src/**/*.js'],
-                dest: 'dist/<%= pkg.name %>.js'
+                    'src/base/pane.js',
+                    'src/base/single/single.js',
+                    'src/base/single/text.js',
+                    'src/base/single/button/button.basic.js',
+                    'src/base/single/button/button.node.js',
+                    'src/base/**/*.js'
+                ],
+                dest: 'dist/base.js'
             },
-            nothird: {
+            //实现好的一些基础实例
+            caseJs: {
                 src: [
-                    'src/core/underscore.js',
-                    'src/core/foundation.js',
-                    'src/core/**/*.js',
-
-                    'src/data/data.js',
-                    'src/data/**/*.js',
-
-                    'src/base/status.js',
-                    'src/base/base.js',
-                    'src/base/ob.js',
-                    'src/base/widget.js',
-                    'src/base/model.js',
-                    'src/base/view.js',
-                    'src/base/shortcut.js',
-                    'src/base/utils/*.js',
-                    'src/base/behavior/behavior.js',
-                    'src/base/wrapper/layout.js',
-                    'src/base/module/pane.js',
-                    'src/base/module/single/single.js',
-                    'src/base/module/single/text.js',
-                    'src/base/module/single/button/button.basic.js',
-                    'src/base/module/single/button/button.node.js',
-
-                    'src/base/**/*.js', 'src/case/**/*.js'],
-                dest: 'dist/<%= pkg.name %>.simple.js'
+                    'src/case/**/*.js'
+                ],
+                dest: 'dist/case.js'
             },
-            css: {
-                src: ['src/css/**/*.css'],//当前grunt项目中路径下的src/css目录下的所有css文件
-                dest: 'dist/<%= pkg.name %>.css'  //生成到grunt项目路径下的dist文件夹下为all.css
+            coreCss: {
+                src: ['src/css/core/**/*.css'],
+                dest: 'dist/core.css'
+            },
+            baseCss: {
+                src: ['src/css/base/**/*.css'],
+                dest: 'dist/base.css'
             }
         },
 
@@ -76,18 +66,27 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+                    'dist/core.min.js': ['<%= concat.coreJs.dest %>'],
+                    'dist/base.min.js': ['<%= concat.baseJs.dest %>'],
+                    'dist/case.min.js': ['<%= concat.caseJs.dest %>']
                 }
             }
         },
 
-         cssmin: {
+        cssmin: {
 
-            css: {
+            coreCss: {
 
-                src:'<%= concat.css.dest %>',
+                src: '<%= concat.coreCss.dest %>',
 
-                dest:'dist/<%= pkg.name %>.min.css'
+                dest: 'dist/core.min.css'
+
+            },
+            baseCss: {
+
+                src: '<%= concat.baseCss.dest %>',
+
+                dest: 'dist/base.min.css'
 
             }
 
